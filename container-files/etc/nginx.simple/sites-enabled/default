@@ -1,0 +1,22 @@
+server {
+    listen      80 default_server;
+    server_name _;
+    root /var/www;
+    location / {
+        index  index.html index.htm;
+    }
+    location ~ \.php$ {
+        include fastcgi.conf;
+
+        fastcgi_split_path_info ^(.+\.php)($|/.*);
+        try_files $fastcgi_script_name =404;
+
+        set $path_info $fastcgi_path_info;
+        fastcgi_param PATH_INFO $path_info;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_ignore_client_abort     off;
+
+        fastcgi_index index.php;
+        fastcgi_pass fpm;
+    }
+}
