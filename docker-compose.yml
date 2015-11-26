@@ -1,0 +1,40 @@
+nginx:
+  image: yfix/nginx
+  restart: always
+  ports:
+    - 30180:80
+  links:
+    - php
+  volumes:
+    - ./container-files/etc/nginx:/etc/nginx
+    - ./container-files/var/www:/var/www
+    - ./container-files/var/cache/nginx:/var/cache/nginx
+
+php:
+  image: yfix/php
+  restart: always
+  ports:
+    - 39001:9000
+  links:
+    - mysql
+  volumes:
+    - ./container-files/etc/php5/cli/php.ini:/etc/php5/cli/php.ini
+    - ./container-files/etc/php5/fpm/php.ini:/etc/php5/fpm/php.ini
+    - ./container-files/etc/php5/fpm/php-fpm.conf:/etc/php5/fpm/php-fpm.conf
+    - ./container-files/etc/php5/fpm/pool.d/www.conf:/etc/php5/fpm/pool.d/www.conf
+    - ./container-files/var/lib/php5/sessions:/var/lib/php5/sessions
+    - ./container-files/var/www:/var/www
+
+mysql:
+  image: yfix/mysql
+  restart: always
+  ports:
+    - 33061:3306
+  environment:
+    - MYSQL_ROOT_PASSWORD=123456
+    - MYSQL_DATABASE=yf_for_unit_tests
+    - MYSQL_USER=yf_test
+    - MYSQL_PASSWORD=yf_test
+  volumes:
+    - ./container-files/etc/mysql/my.cnf:/etc/mysql/my.cnf
+    - ./container-files/var/lib/mysql:/var/lib/mysql
