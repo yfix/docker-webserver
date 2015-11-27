@@ -44,3 +44,16 @@ mysql:
     - MYSQL_PASSWORD=yf_test
   volumes_from:
     - data
+
+ssh:
+  image: yfix/ssh
+  restart: always
+  privileged: true
+  ports:
+    - 30221:22
+  links:
+    - nginx
+    - php
+    - mysql
+  volumes_from:
+    - data
