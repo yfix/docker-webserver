@@ -16,9 +16,10 @@ nginx:
   image: yfix/nginx
   restart: always
   ports:
-    - 30180:80
+    - "30180:80"
   links:
     - php
+    - memcached
   volumes_from:
     - data
 
@@ -26,9 +27,12 @@ php:
   image: yfix/php
   restart: always
   ports:
-    - 39001:9000
+    - "39001:9000"
   links:
     - mysql
+    - memcached
+    - redis
+    - rabbitmq
   volumes_from:
     - data
 
@@ -36,7 +40,7 @@ mysql:
   image: yfix/mysql
   restart: always
   ports:
-    - 33061:3306
+    - "33061:3306"
   environment:
     - MYSQL_ROOT_PASSWORD=123456
     - MYSQL_DATABASE=yf_for_unit_tests
@@ -50,10 +54,39 @@ ssh:
   restart: always
   privileged: true
   ports:
-    - 30221:22
+    - "30221:22"
   links:
     - nginx
     - php
     - mysql
   volumes_from:
     - data
+
+memcached:
+  image: memcached
+  restart: always
+  ports:
+    - "31111:11211"
+  command: memcached -m 8
+
+redis:
+  image: redis
+  restart: always
+  ports:
+    - "36379:6379"
+
+rabbitmq:
+  image: rabbitmq
+  restart: always
+  hostname: yfix-rabbitmq
+  ports:
+    - "34369:4369"
+    - "35671:5671"
+    - "35672:5672"
+    - "35673:25672"
+
+#sphinxsearch:
+#  image: yfix/sphinxsearch
+#  restart: always
+#  ports:
+#    - "39301:9306"
