@@ -69,6 +69,12 @@ memcached:
     - "31111:11211"
   command: memcached -m 8
 
+couchbase:
+  image: couchbase/server:community-4.0.0
+  restart: always
+  ports:
+    - "38091:8091"
+
 redis:
   image: redis
   restart: always
