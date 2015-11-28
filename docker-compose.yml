@@ -1,17 +1,7 @@
 data:
   image: tianon/true
   volumes:
-    - ./container-files/etc/nginx:/etc/nginx
-    - ./container-files/var/cache/nginx:/var/cache/nginx
     - ./container-files/var/www:/var/www
-    - ./container-files/etc/php5/cli/php.ini:/etc/php5/cli/php.ini
-    - ./container-files/etc/php5/fpm/php.ini:/etc/php5/fpm/php.ini
-    - ./container-files/etc/php5/fpm/php-fpm.conf:/etc/php5/fpm/php-fpm.conf
-    - ./container-files/etc/php5/fpm/pool.d/www.conf:/etc/php5/fpm/pool.d/www.conf
-    - ./container-files/var/lib/php5/sessions:/var/lib/php5/sessions
-    - ./container-files/etc/mysql/my.cnf:/etc/mysql/my.cnf
-    - ./container-files/var/lib/mysql:/var/lib/mysql
-
 nginx:
   image: yfix/nginx
   restart: always
@@ -22,6 +12,9 @@ nginx:
     - memcached
   volumes_from:
     - data
+  volumes:
+    - ./container-files/etc/nginx:/etc/nginx
+    - ./container-files/var/cache/nginx:/var/cache/nginx
 
 php:
   image: yfix/php
@@ -31,10 +24,19 @@ php:
   links:
     - mysql
     - memcached
+    - counchbase
     - redis
+    - mongo
     - rabbitmq
+    - sphinxsearch
   volumes_from:
     - data
+  volumes:
+    - ./container-files/etc/php5/cli/php.ini:/etc/php5/cli/php.ini
+    - ./container-files/etc/php5/fpm/php.ini:/etc/php5/fpm/php.ini
+    - ./container-files/etc/php5/fpm/php-fpm.conf:/etc/php5/fpm/php-fpm.conf
+    - ./container-files/etc/php5/fpm/pool.d/www.conf:/etc/php5/fpm/pool.d/www.conf
+    - ./container-files/var/lib/php5/sessions:/var/lib/php5/sessions
 
 mysql:
   image: yfix/mysql
@@ -48,6 +50,9 @@ mysql:
     - MYSQL_PASSWORD=yf_test
   volumes_from:
     - data
+  volumes:
+    - ./container-files/etc/mysql/my.cnf:/etc/mysql/my.cnf
+    - ./container-files/var/lib/mysql:/var/lib/mysql
 
 ssh:
   image: yfix/ssh
@@ -74,12 +79,25 @@ couchbase:
   restart: always
   ports:
     - "38091:8091"
+  volumes:
+    - ./container-files/opt/couchbase/var:/opt/couchbase/var
 
 redis:
   image: redis
   restart: always
   ports:
-    - "36379:6379"
+    - "33791:6379"
+  volumes:
+    - ./container-files/etc/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    - ./container-files/redis-data:/data
+
+mongo:
+  image: mongo
+  restart: always
+  ports:
+    - "37017:27017"
+  volumes:
+    - ./container-files/mongodb-data:/data/db
 
 rabbitmq:
   image: rabbitmq
@@ -90,9 +108,15 @@ rabbitmq:
     - "35671:5671"
     - "35672:5672"
     - "35673:25672"
+  volumes:
+    - ./container-files/etc/rabbitmq/rabbitmq.config:/etc/rabbitmq/rabbitmq.config
+    - ./container-files/var/lib/rabbitmq:/var/lib/rabbitmq
 
-#sphinxsearch:
-#  image: yfix/sphinxsearch
-#  restart: always
-#  ports:
-#    - "39301:9306"
+sphinxsearch:
+  image: yfix/sphinxsearch
+  restart: always
+  ports:
+    - "39301:9306"
+  volumes:
+    - ./container-files/var/lib/sphinx:/var/lib/sphinx
+    - ./container-files/var/log/sphinx:/var/log/sphinx
