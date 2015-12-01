@@ -2,8 +2,6 @@ data:
   image: tianon/true
   volumes:
     - ./container-files/var/www:/var/www
-    - ./container-files/var/log/supervisor:/var/log/supervisor
-
 nginx:
   image: yfix/nginx
   restart: always
@@ -17,8 +15,6 @@ nginx:
   volumes:
     - ./container-files/etc/nginx:/etc/nginx
     - ./container-files/var/cache/nginx:/var/cache/nginx
-    - ./container-files/var/log/nginx:/var/log/nginx
-    - ./container-files/etc/supervisor/conf.d/nginx.conf:/etc/supervisor/conf.d/nginx.conf
 
 php:
   image: yfix/php
@@ -28,6 +24,11 @@ php:
   links:
     - mysql
     - memcached
+    - couchbase
+    - redis
+    - mongo
+    - rabbitmq
+    - sphinxsearch
   volumes_from:
     - data
   volumes:
@@ -35,9 +36,8 @@ php:
     - ./container-files/etc/php5/fpm/php.ini:/etc/php5/fpm/php.ini
     - ./container-files/etc/php5/fpm/php-fpm.conf:/etc/php5/fpm/php-fpm.conf
     - ./container-files/etc/php5/fpm/pool.d/www.conf:/etc/php5/fpm/pool.d/www.conf
-    - ./container-files/var/log/php5:/var/log/php5
     - ./container-files/var/lib/php5/sessions:/var/lib/php5/sessions
-    - ./container-files/etc/supervisor/conf.d/php5-fpm.conf:/etc/supervisor/conf.d/php5-fpm.conf
+#    - ./container-files/usr/local/share/composer:/usr/local/share/composer
 
 mysql:
   image: yfix/mysql
@@ -74,3 +74,50 @@ memcached:
   ports:
     - "31111:11211"
   command: memcached -m 8
+
+couchbase:
+  image: couchbase/server:community-4.0.0
+  restart: always
+  ports:
+    - "38091:8091"
+#  volumes:
+#    - ./container-files/opt/couchbase/var:/opt/couchbase/var
+
+redis:
+  image: redis
+  restart: always
+  ports:
+    - "33791:6379"
+#  volumes:
+#    - ./container-files/etc/redis/redis.conf:/usr/local/etc/redis/redis.conf
+#    - ./container-files/redis-data:/data
+
+mongo:
+  image: mongo
+  restart: always
+  ports:
+    - "37017:27017"
+#  volumes:
+#    - ./container-files/mongodb-data:/data/db
+
+rabbitmq:
+  image: rabbitmq
+  restart: always
+  hostname: yfix-rabbitmq
+  ports:
+    - "34369:4369"
+    - "35671:5671"
+    - "35672:5672"
+    - "35673:25672"
+#  volumes:
+#    - ./container-files/etc/rabbitmq/rabbitmq.config:/etc/rabbitmq/rabbitmq.config
+#    - ./container-files/var/lib/rabbitmq:/var/lib/rabbitmq
+
+sphinxsearch:
+  image: yfix/sphinxsearch
+  restart: always
+  ports:
+    - "39301:9306"
+#  volumes:
+#    - ./container-files/var/lib/sphinx:/var/lib/sphinx
+#    - ./container-files/var/log/sphinx:/var/log/sphinx
