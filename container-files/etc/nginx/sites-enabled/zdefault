@@ -1,6 +1,5 @@
 server {
     listen      80 default_server;
-    listen      443 ssl default;
     server_name _;
     if ($bad_country = yes) {
         return 444;
