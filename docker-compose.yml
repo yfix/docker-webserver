@@ -23,8 +23,6 @@ nginx:
 php:
   image: yfix/php
   restart: always
-  ports:
-    - "39001:9000"
   links:
     - mysql
     - memcached
@@ -42,8 +40,6 @@ php:
 mysql:
   image: yfix/mysql
   restart: always
-  ports:
-    - "33061:3306"
   environment:
     - MYSQL_ROOT_PASSWORD=123456
     - MYSQL_DATABASE=yf_for_unit_tests
@@ -71,6 +67,4 @@ ssh:
 memcached:
   image: memcached
   restart: always
-  ports:
-    - "31111:11211"
   command: memcached -m 8

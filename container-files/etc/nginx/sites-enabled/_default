@@ -1,9 +1,10 @@
 server {
     listen      80 default_server;
+    listen      443 ssl default;
     server_name _;
     if ($bad_country = yes) {
         return 444;
     }
-    root /var/www;
+    root /var/www/default;
     include shared.conf;
 }
