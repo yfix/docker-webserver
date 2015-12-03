@@ -67,6 +67,10 @@ ssh:
     - mysql
   volumes_from:
     - data
+  volumes:
+    - ./container-files/config/authorized_keys:/config/authorized_keys:ro
+    - ./container-files/etc/supervisor/conf.d/sshd.conf:/etc/supervisor/conf.d/sshd.conf
+    - ./container-files/var/log/supervisor:/var/log/supervisor
 
 memcached:
   image: memcached
