@@ -57,12 +57,11 @@ ssh:
   privileged: true
   ports:
     - "30221:22"
-  links:
-    - nginx
-    - php
-    - mysql
   volumes_from:
     - data
+  volumes:
+    - ./container-files/config/authorized_keys:/config/authorized_keys:ro
+    - ./container-files/etc/supervisor/conf.d/sshd.conf:/etc/supervisor/conf.d/sshd.conf
 
 memcached:
   image: memcached
