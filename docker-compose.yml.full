@@ -1,7 +1,7 @@
 data:
   image: tianon/true
   volumes:
-    - ./container-files/var/www:/var/www
+    - ./docker/var/www:/var/www
 nginx:
   image: yfix/nginx
   restart: always
@@ -13,8 +13,8 @@ nginx:
   volumes_from:
     - data
   volumes:
-    - ./container-files/etc/nginx:/etc/nginx
-    - ./container-files/var/cache/nginx:/var/cache/nginx
+    - ./docker/etc/nginx:/etc/nginx
+    - ./docker/var/cache/nginx:/var/cache/nginx
 
 php:
   image: yfix/php
@@ -32,12 +32,12 @@ php:
   volumes_from:
     - data
   volumes:
-    - ./container-files/etc/php5/cli/php.ini:/etc/php5/cli/php.ini
-    - ./container-files/etc/php5/fpm/php.ini:/etc/php5/fpm/php.ini
-    - ./container-files/etc/php5/fpm/php-fpm.conf:/etc/php5/fpm/php-fpm.conf
-    - ./container-files/etc/php5/fpm/pool.d/www.conf:/etc/php5/fpm/pool.d/www.conf
-    - ./container-files/var/lib/php5/sessions:/var/lib/php5/sessions
-#    - ./container-files/usr/local/share/composer:/usr/local/share/composer
+    - ./docker/etc/php5/cli/php.ini:/etc/php5/cli/php.ini
+    - ./docker/etc/php5/fpm/php.ini:/etc/php5/fpm/php.ini
+    - ./docker/etc/php5/fpm/php-fpm.conf:/etc/php5/fpm/php-fpm.conf
+    - ./docker/etc/php5/fpm/pool.d/www.conf:/etc/php5/fpm/pool.d/www.conf
+    - ./docker/var/lib/php5/sessions:/var/lib/php5/sessions
+#    - ./docker/usr/local/share/composer:/usr/local/share/composer
 
 mysql:
   image: yfix/mysql
@@ -52,8 +52,8 @@ mysql:
   volumes_from:
     - data
   volumes:
-    - ./container-files/etc/mysql/my.cnf:/etc/mysql/my.cnf
-    - ./container-files/var/lib/mysql:/var/lib/mysql
+    - ./docker/etc/mysql/my.cnf:/etc/mysql/my.cnf
+    - ./docker/var/lib/mysql:/var/lib/mysql
 
 ssh:
   image: yfix/ssh
@@ -68,8 +68,8 @@ ssh:
   volumes_from:
     - data
   volumes:
-    - ./container-files/config/authorized_keys:/config/authorized_keys:ro
-    - ./container-files/etc/supervisor/conf.d/sshd.conf:/etc/supervisor/conf.d/sshd.conf
+    - ./docker/config/authorized_keys:/config/authorized_keys:ro
+    - ./docker/etc/supervisor/conf.d/sshd.conf:/etc/supervisor/conf.d/sshd.conf
 
 memcached:
   image: memcached
@@ -84,7 +84,7 @@ couchbase:
   ports:
     - "38091:8091"
 #  volumes:
-#    - ./container-files/opt/couchbase/var:/opt/couchbase/var
+#    - ./docker/opt/couchbase/var:/opt/couchbase/var
 
 redis:
   image: redis
@@ -92,8 +92,8 @@ redis:
   ports:
     - "33791:6379"
 #  volumes:
-#    - ./container-files/etc/redis/redis.conf:/usr/local/etc/redis/redis.conf
-#    - ./container-files/redis-data:/data
+#    - ./docker/etc/redis/redis.conf:/usr/local/etc/redis/redis.conf
+#    - ./docker/redis-data:/data
 
 mongo:
   image: mongo
@@ -101,7 +101,7 @@ mongo:
   ports:
     - "37017:27017"
 #  volumes:
-#    - ./container-files/mongodb-data:/data/db
+#    - ./docker/mongodb-data:/data/db
 
 rabbitmq:
   image: rabbitmq
@@ -113,8 +113,8 @@ rabbitmq:
     - "35672:5672"
     - "35673:25672"
 #  volumes:
-#    - ./container-files/etc/rabbitmq/rabbitmq.config:/etc/rabbitmq/rabbitmq.config
-#    - ./container-files/var/lib/rabbitmq:/var/lib/rabbitmq
+#    - ./docker/etc/rabbitmq/rabbitmq.config:/etc/rabbitmq/rabbitmq.config
+#    - ./docker/var/lib/rabbitmq:/var/lib/rabbitmq
 
 sphinxsearch:
   image: yfix/sphinxsearch
@@ -122,5 +122,5 @@ sphinxsearch:
   ports:
     - "39301:9306"
 #  volumes:
-#    - ./container-files/var/lib/sphinx:/var/lib/sphinx
-#    - ./container-files/var/log/sphinx:/var/log/sphinx
+#    - ./docker/var/lib/sphinx:/var/lib/sphinx
+#    - ./docker/var/log/sphinx:/var/log/sphinx

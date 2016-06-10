@@ -1,8 +1,8 @@
 data:
   image: tianon/true
   volumes:
-    - ./container-files/var/www:/var/www
-    - ./container-files/var/log/supervisor:/var/log/supervisor
+    - ./docker/var/www:/var/www
+    - ./docker/var/log/supervisor:/var/log/supervisor
 
 nginx:
   image: yfix/nginx
@@ -15,10 +15,10 @@ nginx:
   volumes_from:
     - data
   volumes:
-    - ./container-files/etc/nginx:/etc/nginx
-    - ./container-files/var/cache/nginx:/var/cache/nginx
-    - ./container-files/var/log/nginx:/var/log/nginx
-    - ./container-files/etc/supervisor/conf.d/nginx.conf:/etc/supervisor/conf.d/nginx.conf
+    - ./docker/etc/nginx:/etc/nginx
+    - ./docker/var/cache/nginx:/var/cache/nginx
+    - ./docker/var/log/nginx:/var/log/nginx
+    - ./docker/etc/supervisor/conf.d/nginx.conf:/etc/supervisor/conf.d/nginx.conf
 
 php:
   image: yfix/php
@@ -29,13 +29,13 @@ php:
   volumes_from:
     - data
   volumes:
-    - ./container-files/etc/php5/cli/php.ini:/etc/php5/cli/php.ini
-    - ./container-files/etc/php5/fpm/php.ini:/etc/php5/fpm/php.ini
-    - ./container-files/etc/php5/fpm/php-fpm.conf:/etc/php5/fpm/php-fpm.conf
-    - ./container-files/etc/php5/fpm/pool.d/www.conf:/etc/php5/fpm/pool.d/www.conf
-    - ./container-files/var/log/php5:/var/log/php5
-    - ./container-files/var/lib/php5/sessions:/var/lib/php5/sessions
-    - ./container-files/etc/supervisor/conf.d/php5-fpm.conf:/etc/supervisor/conf.d/php5-fpm.conf
+    - ./docker/etc/php5/cli/php.ini:/etc/php5/cli/php.ini
+    - ./docker/etc/php5/fpm/php.ini:/etc/php5/fpm/php.ini
+    - ./docker/etc/php5/fpm/php-fpm.conf:/etc/php5/fpm/php-fpm.conf
+    - ./docker/etc/php5/fpm/pool.d/www.conf:/etc/php5/fpm/pool.d/www.conf
+    - ./docker/var/log/php5:/var/log/php5
+    - ./docker/var/lib/php5/sessions:/var/lib/php5/sessions
+    - ./docker/etc/supervisor/conf.d/php5-fpm.conf:/etc/supervisor/conf.d/php5-fpm.conf
 
 mysql:
   image: yfix/mysql
@@ -48,8 +48,8 @@ mysql:
   volumes_from:
     - data
   volumes:
-    - ./container-files/etc/mysql/my.cnf:/etc/mysql/my.cnf
-    - ./container-files/var/lib/mysql:/var/lib/mysql
+    - ./docker/etc/mysql/my.cnf:/etc/mysql/my.cnf
+    - ./docker/var/lib/mysql:/var/lib/mysql
 
 ssh:
   image: yfix/ssh
@@ -60,8 +60,8 @@ ssh:
   volumes_from:
     - data
   volumes:
-    - ./container-files/config/authorized_keys:/config/authorized_keys:ro
-    - ./container-files/etc/supervisor/conf.d/sshd.conf:/etc/supervisor/conf.d/sshd.conf
+    - ./docker/config/authorized_keys:/config/authorized_keys:ro
+    - ./docker/etc/supervisor/conf.d/sshd.conf:/etc/supervisor/conf.d/sshd.conf
 
 memcached:
   image: memcached
